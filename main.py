@@ -1,29 +1,34 @@
 from Warrior import *
+import time
+
 
 def start():
 
-    d = {'1': 'Goblin', '2' : 'Knight', '3' : 'Dragon', '4' : 'Ork'}
+    dict = {'1': 'Goblin', '2' : 'Knight', '3' : 'Dragon', '4' : 'Ork'}
 
     print ("Начнется бой!")
     print("Выбери воинов, которые будут сражаться!")
     print("1: Goblin, 2: Knight, 3: Dragon, 4: Ork")
-    Warrior1 = (input("Выбери первого воина: "))
-    Warrior2 = (input("Выбери второго воина: "))
 
-    if Warrior1 in d:
-        Warrior1 = d.get(Warrior1)
+    Warrior1 = input("Выбери первую армию: ")
+    Warrior1_count = int(input("Введите количество юнитов: " ))
+    Warrior2 = input("Выбери вторую армию: ")
+    Warrior2_count = int(input("Введите количество юнитов: " ))
 
-    if Warrior2 in d:
-        Warrior2 = d.get(Warrior2)
+    if Warrior1 in dict:
+        Warrior1 = dict.get(Warrior1)
 
-    return Warrior1, Warrior2
+    if Warrior2 in dict:
+        Warrior2 = dict.get(Warrior2)
+
+    return Warrior1, Warrior2, Warrior1_count, Warrior2_count
 
 
 def mapping(Warrior1, Warrior2):
-    Unit1 = Warrior("Goblin", 30, 5, 2)
-    Unit2 = Warrior("Knight", 35, 10, 4)
-    Unit3 = Warrior("Dragon", 200, 25, 20)
-    Unit4 = Warrior("Ork", 33, 6, 7)
+    Unit1 = Warrior("Goblin", 7, 3, 1)
+    Unit2 = Warrior("Knight", 15, 6, 3)
+    Unit3 = Warrior("Dragon", 200, 100, 30)
+    Unit4 = Warrior("Ork", 20, 7, 2)
 
     if Warrior1 == "Goblin":
         Warrior1 = Unit1
@@ -46,25 +51,33 @@ def mapping(Warrior1, Warrior2):
     return Warrior1, Warrior2
 
 
-def battle(Warrior1, Warrior2):
-    while Warrior1.health > 0 or Warrior2.health > 0:
-        damage = Warrior2.attack - Warrior1.defense
-        if damage > 0:
-            Warrior1.health = Warrior1.health - damage
-        print ("Атакует ", Warrior2.name, "| ", Warrior1.name, "health = ", Warrior1.health)
-        if Warrior.check_helth(Warrior1.health):
-            print (Warrior2.name, " победил!")
-            break
+def battle(Warrior1, Warrior2, Warrior1_count, Warrior2_count):
 
-        damage = Warrior1.attack - Warrior2.defense
+    health_sum1 = Warrior1.health * Warrior1_count
+    health_sum2 = Warrior2.health * Warrior2_count
+
+    while Warrior1.health > 0 or Warrior2.health > 0:
+        damage = Warrior1.attack * Warrior1_count - Warrior2.defense
         if damage > 0:
-            Warrior2.health = Warrior2.health - damage
-        print ("Атакует ", Warrior1.name, "| ", Warrior2.name, "health = ", Warrior2.health)
-        if Warrior.check_helth(Warrior2.health):
+            health_sum2 = health_sum2 - damage
+            Warrior2_count = int(health_sum2 / Warrior2.health) + 1
+        print ("Атакует ", Warrior1.name, "| ", Warrior2.name, "осталось:", Warrior2_count, "с общим health = ", health_sum2)
+        if Warrior.check_helth(health_sum2):
             print (Warrior1.name, " победил!")
             break
+        time.sleep(0.5)
 
-Warrior1, Warrior2 = start()
+        damage = Warrior2.attack * Warrior2_count - Warrior1.defense
+        if damage > 0:
+            health_sum1 = health_sum1 - damage
+            Warrior1_count = int(health_sum1 / Warrior1.health) + 1
+        print ("Атакует ", Warrior2.name, "| ", Warrior1.name, "осталось:", Warrior1_count, "с общим health = ", health_sum1)
+        if Warrior.check_helth(health_sum1):
+            print (Warrior2.name, " победил!")
+            break
+        time.sleep(0.5)
+
+Warrior1, Warrior2, Warrior1_count, Warrior2_count = start()
 Warrior1, Warrior2 = mapping(Warrior1, Warrior2)
-print ("Сражаются: ", Warrior1.name, " против ", Warrior2.name)
-battle(Warrior1, Warrior2)
+print ("Сражаются: ", Warrior1.name, "в количестве: ", Warrior1_count, "против ", Warrior2.name, "в количестве: ", Warrior2_count)
+battle(Warrior1, Warrior2, Warrior1_count, Warrior2_count)
