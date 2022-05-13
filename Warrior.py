@@ -9,16 +9,26 @@ class Warrior:
         self.attack_max  = attack_max
         self.defense     = defense
 
+    #Проверка жив или метрв стек
     def check_helth(helth):
         if helth <=0:
             return 1
         else:
             return 0
 
+    #Случайная атака
     def random_attack(attack_min, attack_max):
         result = random.randint(attack_min, attack_max)
         return result
 
+    # def check_usr_data(text):
+    #     if text.isdecimal():
+    #         return text
+    #     else:
+    #         print("Ошибка при вводе данных, повторите попытку.")
+
+
+    #Ввод пользователем данных о стеках
     def start():
 
         dict = {'1': 'Goblin', '2' : 'Knight', '3' : 'Dragon', '4' : 'Ork'}
@@ -40,7 +50,7 @@ class Warrior:
 
         return Warrior1, Warrior2, Warrior1_count, Warrior2_count
 
-
+    #Маппинг пользовательского выбора с данными об этих данных
     def mapping(Warrior1, Warrior2):
         Unit1 = Warrior("Goblin", 7, 1, 3, 1)
         Unit2 = Warrior("Knight", 15, 4, 6, 3)
@@ -67,12 +77,14 @@ class Warrior:
 
         return Warrior1, Warrior2
 
+    #Битва
     def battle(Warrior1, Warrior2, Warrior1_count, Warrior2_count):
 
         health_sum1 = Warrior1.health * Warrior1_count
         health_sum2 = Warrior2.health * Warrior2_count
 
         while Warrior1.health > 0 or Warrior2.health > 0:
+            #Атака первого стека
             damage = Warrior.random_attack(Warrior1.attack_min, Warrior1.attack_max) * Warrior1_count - Warrior2.defense
             if damage > 0:
                 health_sum2 = health_sum2 - damage
@@ -83,6 +95,7 @@ class Warrior:
                 break
             time.sleep(0.5)
 
+            #Атака второго стека
             damage = Warrior.random_attack(Warrior2.attack_min, Warrior2.attack_max) * Warrior2_count - Warrior1.defense
             if damage > 0:
                 health_sum1 = health_sum1 - damage
