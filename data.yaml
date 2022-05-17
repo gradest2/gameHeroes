@@ -1,0 +1,26 @@
+---
+  GameUnits:
+    Goblin:
+      Name: "Goblin"
+      Health: 7
+      Attack_min: 1
+      Attack_max: 3
+      Defense: 1
+    Knight:
+      Name: "Knight"
+      Health: 15
+      Attack_min: 4
+      Attack_max: 6
+      Defense: 3
+    Dragon:
+      Name: "Dragon"
+      Health: 200
+      Attack_min: 70
+      Attack_max: 100
+      Defense: 30
+    Ork:
+      Name: "Ork"
+      Health: 20
+      Attack_min: 5
+      Attack_max: 7
+      Defense: 2

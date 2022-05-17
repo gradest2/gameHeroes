@@ -1,4 +1,5 @@
 import random, time
+import yaml
 
 class Warrior:
     """Class make unic unit"""
@@ -9,7 +10,7 @@ class Warrior:
         self.attack_max  = attack_max
         self.defense     = defense
 
-    #Проверка жив или метрв стек
+    #Проверка жив или мертв стек
     def check_helth(helth):
         if helth <=0:
             return 1
@@ -26,6 +27,21 @@ class Warrior:
     #         return text
     #     else:
     #         print("Ошибка при вводе данных, повторите попытку.")
+
+
+    #Маппинг данных
+    def mapping(Unit):
+
+        stream = open("data.yaml", 'r')
+        gameData = yaml.safe_load(stream)
+
+        Unit  = Warrior(gameData["GameUnits"][Unit]["Name"],
+                           gameData["GameUnits"][Unit]["Health"],
+                           gameData["GameUnits"][Unit]["Attack_min"],
+                           gameData["GameUnits"][Unit]["Attack_max"],
+                           gameData["GameUnits"][Unit]["Defense"])
+
+        return Unit
 
 
     #Ввод пользователем данных о стеках
@@ -48,34 +64,11 @@ class Warrior:
         if Warrior2 in dict:
             Warrior2 = dict.get(Warrior2)
 
+        Warrior1 = Warrior.mapping(Warrior1)
+        Warrior2 = Warrior.mapping(Warrior2)
+
         return Warrior1, Warrior2, Warrior1_count, Warrior2_count
 
-    #Маппинг пользовательского выбора с данными об этих данных
-    def mapping(Warrior1, Warrior2):
-        Unit1 = Warrior("Goblin", 7, 1, 3, 1)
-        Unit2 = Warrior("Knight", 15, 4, 6, 3)
-        Unit3 = Warrior("Dragon", 200, 70, 100, 30)
-        Unit4 = Warrior("Ork", 20, 5, 7, 2)
-
-        if Warrior1 == "Goblin":
-            Warrior1 = Unit1
-        if Warrior1 == "Knight":
-            Warrior1 = Unit2
-        if Warrior1 == "Dragon":
-            Warrior1 = Unit3
-        if Warrior1 == "Ork":
-            Warrior1 = Unit4
-
-        if Warrior2 == "Goblin":
-            Warrior2 = Unit1
-        if Warrior2 == "Knight":
-            Warrior2 = Unit2
-        if Warrior2 == "Dragon":
-            Warrior2 = Unit3
-        if Warrior2 == "Ork":
-            Warrior2 = Unit4
-
-        return Warrior1, Warrior2
 
     #Битва
     def battle(Warrior1, Warrior2, Warrior1_count, Warrior2_count):
