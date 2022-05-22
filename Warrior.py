@@ -17,23 +17,24 @@ class Warrior:
         else:
             return 0
 
+
     #Случайная атака
     def random_attack(attack_min, attack_max):
         result = random.randint(attack_min, attack_max)
         return result
 
-    # def check_usr_data(text):
-    #     if text.isdecimal():
-    #         return text
-    #     else:
-    #         print("Ошибка при вводе данных, повторите попытку.")
 
+    #Чтение конфига
+    def config():
+
+        stream = open("data.yaml", 'r')
+        gameData = yaml.safe_load(stream)
+        return gameData
 
     #Маппинг данных
     def mapping(Unit):
 
-        stream = open("data.yaml", 'r')
-        gameData = yaml.safe_load(stream)
+        gameData = Warrior.config()
 
         Unit  = Warrior(gameData["GameUnits"][Unit]["Name"],
                            gameData["GameUnits"][Unit]["Health"],
@@ -47,25 +48,30 @@ class Warrior:
     #Ввод пользователем данных о стеках
     def start():
 
-        dict = {'1': 'Goblin', '2' : 'Knight', '3' : 'Dragon', '4' : 'Ork'}
-
         print ("Начнется бой!")
         print("Выбери воинов, которые будут сражаться!")
-        print("1: Goblin, 2: Knight, 3: Dragon, 4: Ork")
 
-        Warrior1 = input("Выбери первую армию: ")
-        Warrior1_count = int(input("Введите количество юнитов: " ))
-        Warrior2 = input("Выбери вторую армию: ")
-        Warrior2_count = int(input("Введите количество юнитов: " ))
+        #Сформировать словарь и вывести сообщения выбора войск
+        gameData = Warrior.config()
+        dict = {}
+        i = 1
+        for k, v in gameData["GameUnits"].items():
+            dict.update({i: k})
+            print (i, ":", k)
+            i += 1
 
-        if Warrior1 in dict:
-            Warrior1 = dict.get(Warrior1)
+        try:
+            Warrior1 = int(input("Выбери первую армию: "))
+            Warrior1_count = int(input("Введите количество юнитов: " ))
+            Warrior2 = int(input("Выбери вторую армию: "))
+            Warrior2_count = int(input("Введите количество юнитов: " ))
 
-        if Warrior2 in dict:
-            Warrior2 = dict.get(Warrior2)
-
-        Warrior1 = Warrior.mapping(Warrior1)
-        Warrior2 = Warrior.mapping(Warrior2)
+            if Warrior1 in dict and Warrior2 in dict:
+                Warrior1 = Warrior.mapping(dict.get(Warrior1))
+                Warrior2 = Warrior.mapping(dict.get(Warrior2))
+        except ValueError or KeyError:
+            print ("Введены неверные данные. Перезапустите игру и попробуйте снова!")
+            return 1
 
         return Warrior1, Warrior2, Warrior1_count, Warrior2_count
 
