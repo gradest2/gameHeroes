@@ -3,12 +3,13 @@ import yaml
 
 class Warrior:
     """Class make unic unit"""
-    def __init__(self, name, health, attack_min, attack_max, defense):
+    def __init__(self, name, health, attack_min, attack_max, defense, price):
         self.name        = name
         self.health      = health
         self.attack_min  = attack_min
         self.attack_max  = attack_max
         self.defense     = defense
+        self.price       = price
 
     #Проверка жив или мертв стек
     def check_helth(helth):
@@ -40,16 +41,26 @@ class Warrior:
                            gameData["GameUnits"][Unit]["Health"],
                            gameData["GameUnits"][Unit]["Attack_min"],
                            gameData["GameUnits"][Unit]["Attack_max"],
-                           gameData["GameUnits"][Unit]["Defense"])
+                           gameData["GameUnits"][Unit]["Defense"],
+                           gameData["GameUnits"][Unit]["Price"])
 
         return Unit
 
 
+    def check_user_army(max_user_army):
+        Warrior1_count = int(input("Введите количество юнитов, которые хотите купить: " ))
+        while Warrior1_count > max_user_army:
+            print("У вас недостаточно золота на покупку. Вы можете купить максимум: ", max_user_army)
+            Warrior1_count = int(input("Введите количество юнитов, которые хотите купить: " ))
+        return Warrior1_count
+
     #Ввод пользователем данных о стеках
     def start():
 
+        zoloto = 10000
         print ("Начнется бой!")
-        print("Выбери воинов, которые будут сражаться!")
+        print("Выбери воинов, которые будут сражаться! У Вас только ", zoloto, " золота")
+
 
         #Сформировать словарь и вывести сообщения выбора войск
         gameData = Warrior.config()
@@ -61,14 +72,13 @@ class Warrior:
             i += 1
 
         try:
-            Warrior1 = int(input("Выбери первую армию: "))
-            Warrior1_count = int(input("Введите количество юнитов: " ))
-            Warrior2 = int(input("Выбери вторую армию: "))
-            Warrior2_count = int(input("Введите количество юнитов: " ))
-
-            if Warrior1 in dict and Warrior2 in dict:
-                Warrior1 = Warrior.mapping(dict.get(Warrior1))
-                Warrior2 = Warrior.mapping(dict.get(Warrior2))
+            Warrior1 = Warrior.mapping(dict.get(int(input("Выбери свою армию: "))))
+            max_user_army = zoloto//Warrior1.price
+            print("Максимальное количество юнитов, которое вы можете купить: ",  max_user_army)
+            Warrior1_count = Warrior.check_user_army(max_user_army)
+            zoloto = zoloto - Warrior1_count * Warrior1.price
+            Warrior2 = Warrior.mapping(dict.get(int(input("Выбери вторую армию: "))))
+            Warrior2_count = int(input("Введите количество врагов: " ))
         except ValueError or KeyError:
             print ("Введены неверные данные. Перезапустите игру и попробуйте снова!")
             return 1
@@ -88,9 +98,9 @@ class Warrior:
             if damage > 0:
                 health_sum2 = health_sum2 - damage
                 Warrior2_count = int(health_sum2 / Warrior2.health) + 1
-            print ("Атакует ", Warrior1.name, "| ", Warrior2.name, "осталось:", Warrior2_count, "с общим health = ", health_sum2)
+            print ("Атакует Стек1", Warrior1.name, "| ", Warrior2.name, "осталось:", Warrior2_count)
             if Warrior.check_helth(health_sum2):
-                print (Warrior1.name, " победил!")
+                print ("Стек1: ", Warrior1.name, " победил!")
                 break
             time.sleep(0.5)
 
@@ -99,8 +109,8 @@ class Warrior:
             if damage > 0:
                 health_sum1 = health_sum1 - damage
                 Warrior1_count = int(health_sum1 / Warrior1.health) + 1
-            print ("Атакует ", Warrior2.name, "| ", Warrior1.name, "осталось:", Warrior1_count, "с общим health = ", health_sum1)
+            print ("Атакует Стек2", Warrior2.name, "| ", Warrior1.name, "осталось:", Warrior1_count)
             if Warrior.check_helth(health_sum1):
-                print (Warrior2.name, " победил!")
+                print ("Стек2: ", Warrior2.name, " победил!")
                 break
             time.sleep(0.5)
