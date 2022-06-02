@@ -58,6 +58,7 @@ class Warrior:
     def start():
 
         zoloto = 10000
+        ai_zoloto = zoloto
         print ("Начнется бой!")
         print("Выбери воинов, которые будут сражаться! У Вас только ", zoloto, " золота")
 
@@ -77,9 +78,15 @@ class Warrior:
             print("Максимальное количество юнитов, которое вы можете купить: ",  max_user_army)
             Warrior1_count = Warrior.check_user_army(max_user_army)
             zoloto = zoloto - Warrior1_count * Warrior1.price
-            Warrior2 = Warrior.mapping(dict.get(int(input("Выбери вторую армию: "))))
-            Warrior2_count = int(input("Введите количество врагов: " ))
-        except ValueError or KeyError:
+
+            #AI выбирает свою армию
+            Warrior2 = Warrior.mapping(dict.get(int(random.randint(1, i-1))))
+            max_ai_army = ai_zoloto//Warrior2.price
+            Warrior2_count = max_ai_army
+            print("Компьютер купил:", Warrior2.name, "В количестве: ",  max_ai_army)
+            ai_zoloto = ai_zoloto - Warrior2_count * Warrior2.price
+            time.sleep(3)
+        except (ValueError, KeyError):
             print ("Введены неверные данные. Перезапустите игру и попробуйте снова!")
             return 1
 
@@ -89,6 +96,9 @@ class Warrior:
     #Битва
     def battle(Warrior1, Warrior2, Warrior1_count, Warrior2_count):
 
+        print ("Сражается армия игрока", Warrior1_count, Warrior1.name, "против компьютера", Warrior2_count, Warrior2.name)
+        #print ("Сражается игрок с", Warrior1.name, "в количестве:", Warrior1_count, "против компьютера с", Warrior2.name, "в количестве:", Warrior2_count)
+        time.sleep(3)
         health_sum1 = Warrior1.health * Warrior1_count
         health_sum2 = Warrior2.health * Warrior2_count
 
@@ -98,9 +108,9 @@ class Warrior:
             if damage > 0:
                 health_sum2 = health_sum2 - damage
                 Warrior2_count = int(health_sum2 / Warrior2.health) + 1
-            print ("Атакует Стек1", Warrior1.name, "| ", Warrior2.name, "осталось:", Warrior2_count)
+            print ("Атакует игрок", Warrior1.name, "| ", Warrior2.name, "осталось:", Warrior2_count)
             if Warrior.check_helth(health_sum2):
-                print ("Стек1: ", Warrior1.name, " победил!")
+                print ("Вы победили!")
                 break
             time.sleep(0.5)
 
@@ -109,8 +119,8 @@ class Warrior:
             if damage > 0:
                 health_sum1 = health_sum1 - damage
                 Warrior1_count = int(health_sum1 / Warrior1.health) + 1
-            print ("Атакует Стек2", Warrior2.name, "| ", Warrior1.name, "осталось:", Warrior1_count)
+            print ("Атакует компьютер", Warrior2.name, "| ", Warrior1.name, "осталось:", Warrior1_count)
             if Warrior.check_helth(health_sum1):
-                print ("Стек2: ", Warrior2.name, " победил!")
+                print ("Вы проиграли!")
                 break
             time.sleep(0.5)
