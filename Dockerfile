@@ -7,4 +7,4 @@ RUN apk update &&\
     pip install -r requirements.txt &&\
     pyinstaller --onefile -w -n game main.py
 
-CMD ["sleep", "3600"]
+CMD ["/dist/game"]
