@@ -35,7 +35,7 @@ class Warrior:
     @staticmethod
     def config():
         """read config"""
-        stream = open("data.yaml", 'r', encoding="utf8")
+        stream = open("/data.yaml", 'r', encoding="utf8")
         gameData = yaml.safe_load(stream)
         stream.close()
         return gameData
