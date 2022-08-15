@@ -38,8 +38,8 @@ pipeline {
                sh "cp /dist/gameHeroes ${WORKSPACE}"
                sh "cp /data.yaml ${WORKSPACE}"
              }
-          sh "tar -czvf ${project}_${version}.tar.gz ${WORKSPACE}/gameHeroes ${WORKSPACE}/data.yaml"
-          archiveArtifacts 'gameHeroes', 'data.yaml', "${project}_${version}.tar.gz"
+          sh "tar -czvf ${project}_${version}.tar.gz gameHeroes data.yaml"
+          archiveArtifacts "gameHeroes, data.yaml, ${project}_${version}.tar.gz"
         }
       }
     }
