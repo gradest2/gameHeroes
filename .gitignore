@@ -5,4 +5,3 @@ share
 pyvenv.cfg
 *.pyc
 test.py
-*.groovy
