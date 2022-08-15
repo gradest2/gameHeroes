@@ -152,12 +152,8 @@ class Warrior:
     @staticmethod
     def game():
         """Main method for programm."""
-        try:
-            Warrior1, Warrior2, Warrior1_count, Warrior2_count = Warrior.start()
-        except BaseException: #as err:
-            #print(f"Unexpected {err=}, {type(err)=}")
-            print("Хорошего дня!")
-            sys.exit(0)
+        Warrior1, Warrior2, Warrior1_count, Warrior2_count = Warrior.start()
+        print("Хорошего дня!")
         Warrior.battle(Warrior1, Warrior2, Warrior1_count, Warrior2_count)
 
         playing = "null"
