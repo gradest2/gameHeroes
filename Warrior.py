@@ -35,7 +35,7 @@ class Warrior:
     @staticmethod
     def config():
         """read config"""
-        stream = open("/data.yaml", 'r', encoding="utf8")
+        stream = open("./data.yaml", 'r', encoding="utf8")
         gameData = yaml.safe_load(stream)
         stream.close()
         return gameData
@@ -152,8 +152,12 @@ class Warrior:
     @staticmethod
     def game():
         """Main method for programm."""
-        Warrior1, Warrior2, Warrior1_count, Warrior2_count = Warrior.start()
-        print("Хорошего дня!")
+        try:
+            Warrior1, Warrior2, Warrior1_count, Warrior2_count = Warrior.start()
+        except BaseException: #as err:
+            #print(f"Unexpected {err=}, {type(err)=}")
+            print("Хорошего дня!")
+            sys.exit(0)
         Warrior.battle(Warrior1, Warrior2, Warrior1_count, Warrior2_count)
 
         playing = "null"
