@@ -1,10 +1,10 @@
-FROM python:3.8-alpine3.15
+FROM python:3.8-bullseye
 
 COPY . /
 
-RUN apk update &&\
-    apk add binutils &&\
+RUN apt-get -y update &&\
+    apt-get -y install binutils &&\
     pip install -r requirements.txt &&\
-    pyinstaller --onefile -w -n game main.py
+    pyinstaller --onefile --noconfirm --console --name "gameHeroes" --add-data 'data.yaml:data.yaml' main.py
 
-CMD ["/dist/game"]
+CMD ["/dist/gameHeroes"]
